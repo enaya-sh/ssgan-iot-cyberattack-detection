@@ -1,38 +1,53 @@
 # SSGAN for IoT Cyberattack Detection
 
-## MSc Data Science Research Project
+Research-aligned portfolio implementation accompanying my MSc Data Science
+and Society thesis at Tilburg University.
 
-This repository contains the implementation developed for my MSc research in Data Science and Society at Tilburg University.
+## Scope
 
-The research investigates the use of a Semi-Supervised Generative Adversarial Network (SSGAN) for advanced cyberattack detection in IoT environments, with a focus on combining supervised and unsupervised learning and optimizing model performance.
+This codebase separates a clean, readable portfolio implementation from the
+original research artifact. It models the thesis architecture and optimization
+concepts without claiming byte-for-byte reproduction of every experimental
+detail.
 
-## Research Focus
+## Components
 
-- IoT cybersecurity
-- Cyberattack and anomaly detection
-- Semi-supervised learning
-- Deep learning
-- Generative Adversarial Networks (GANs)
-- Model optimization
+- `src/models.py` — Generator and c+1-class discriminator
+- `src/losses.py` — supervised, unsupervised and reconstruction losses
+- `src/ssgan.py` — SS-GAN training step
+- `src/random_key.py` — mixed-variable Random Key decoding
+- `src/improved_abc.py` — research-aligned improved ABC optimizer
+- `src/evaluation.py` — Accuracy, F1, Precision, Recall, G-Mean and AUC
+- `src/train.py` — compact reference training entry point
 
-## Implementation
+## Important Reproducibility Note
 
-The Python implementation includes:
+The MSc thesis describes dataset-specific preprocessing for NSL-KDD, MAWI and
+CICIoT2023, plus 5-fold stratified cross-validation. Those exact experimental
+pipelines are not fully recoverable from the current public repository alone.
+For that reason, the code here is explicitly labeled a research-aligned
+reference implementation.
 
-- IoT dataset handling and preprocessing
-- Generator and discriminator neural networks
-- Supervised and unsupervised loss functions
-- Generator and reconstruction loss
-- Semi-Supervised GAN training
-- Fitness evaluation and optimization
+## Thesis-Reported Results
 
-## Technologies
+| Dataset | Accuracy | F1 Score | G-Mean | AUC |
+|---|---:|---:|---:|---:|
+| NSL-KDD | 86.658% | 87.046% | 88.064% | 0.838 |
+| MAWI | 89.054% | 90.030% | 91.128% | 0.852 |
+| CICIoT2023 | 87.162% | 88.810% | 89.630% | 0.843 |
 
-- Python
-- PyTorch
-- Machine Learning
-- Deep Learning
-- Generative Adversarial Networks
+These are thesis-reported 5-fold stratified cross-validation results. They are
+not outputs claimed from the simplified runner in this repository.
+
+## Run the Reference Implementation
+
+```bash
+pip install -r requirements.txt
+python -m src.train --csv path/to/clean_numeric_dataset.csv
+```
+
+The generic loader expects an already cleaned numeric CSV with the label in the
+last column unless `--label-column` is provided.
 
 ## Research Context
 
@@ -40,10 +55,20 @@ The Python implementation includes:
 **University:** Tilburg University  
 **Research area:** Data Science × Cybersecurity × IoT Security
 
-The project demonstrates the application of data science and deep-learning methods to cybersecurity attack detection.
 
-## Author
+## Quick Technical Check
 
-**Enayat Shakouri**
+```bash
+python smoke_test.py
+```
 
-Cybersecurity & GRC | IT Audit & Risk Management | Data Science & Analytics
+The smoke test verifies module imports, one CPU SS-GAN training step,
+Random Key decoding, and a small Improved ABC optimization run.
+
+## Scope Boundary
+
+The code is a cleaned, research-aligned portfolio implementation. It does not
+claim exact reproduction of the original experiment's dataset-specific
+preprocessing, asynchronous generator/discriminator training schedule, or every
+implementation choice used to obtain the thesis-reported cross-validation
+results.
